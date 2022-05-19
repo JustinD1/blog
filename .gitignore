@@ -1,0 +1,28 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+static
+/static_collect
+
+# Backup files #
+*.bak
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# celery
+celerybeat-schedule.*
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

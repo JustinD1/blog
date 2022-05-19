@@ -1,0 +1,31 @@
+{% load static %}<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Justin's Blog{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    {% block css_insert %}{% endblock %}
+    <link href="{% static 'css-blog.css' %}" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  </head>
+  <body>
+    <header>
+      <div class="headerDiv">
+            <div class="headerText">
+              <a href="{% url 'home:home' %}"><h1><span>Justin Donohoe</span></h1></a>
+            </div>
+            {% include "navigation.html" %}
+      </div>
+    </header>
+    <div class="mainContainer">
+      {% block content %}{% endblock %}
+    </div>
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    {% block java_insert %}{% endblock %}
+  </body>
+  <br>
+  <footer>All right reserved &copy {% now 'Y' %}</footer>
+</html>
