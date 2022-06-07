@@ -1,12 +1,13 @@
-{% load static %}<!doctype html>
+<!doctype html>
+{% load static %}
 <html>
   <head>
     <meta charset="utf-8">
     <title>{% block title %}Justin's Blog{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'image/favicon/favicon.svg' %}">
 
     {% block css_insert %}{% endblock %}
-    <link href="{% static 'css-blog.css' %}" rel="stylesheet">
+    <link href="{% static 'css/css-blog.css' %}" rel="stylesheet">
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
   </head>
@@ -14,16 +15,26 @@
     <header>
       <div class="headerDiv">
             <div class="headerText">
-              <a href="{% url 'home:home' %}"><h1><span>Justin Donohoe</span></h1></a>
+              <a href="{% url 'home' %}"><h1><span>Justin Donohoe</span></h1></a>
             </div>
             {% include "navigation.html" %}
       </div>
     </header>
-    <div class="mainContainer">
+
+    <div id="lft-column" class="content">
+      {% include "about.html" %}
+    </div>
+
+    <div id="Ctr-column" class="content">
       {% block content %}{% endblock %}
     </div>
-    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'js/app.js' %}"></script>
+
+    <div id="rgt-column" class="content">
+      {% include "tags.html" %}
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'js/js-global.js' %}"></script>
     {% block java_insert %}{% endblock %}
   </body>
   <br>

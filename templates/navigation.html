@@ -1,47 +1,14 @@
-{% load base_extras %}
+{% load custom_tags %}
 <div id="topbar">
   <div class="navbar">
     <div class="navbar-content">
       <div class="non-collapsable-nav">
         <ul class="nav-ui">
-          {% for item in category %}
-            <li>
-              <a href="#">
-                {% navactive request %}
-              </a>
-            </li>
+          {% for item in navitation %}
+          <li>
+            <a class="{% navactive request 'blog_filter' slug=item.slug %}" href="{% url 'blog_filter' slug=item.slug %}">{{ item.category }}</a>
+          </li>
           {% endfor %}
-          <li>
-            <a class="{% navactive request 'cloud_storage:home' %}" href="{% url 'cloud_storage:home' %}">DSG Cloud</a>
-          </li>
-          <li>
-            <a class="{% navactive request 'user_calendar:full_calendar' %}" href="{% url 'user_calendar:full_calendar' %}">Calendar</a>
-          </li>
-          {% if  user.profile.hierarchy < 4 %}
-          <li>
-            <a class="{% navactive request 'sls:register' %}" href="{% url 'sls:register' %}">Register</a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-      <div class="collapsable-nav">
-        <ul class="nav-ui">
-          <li>
-            <a href="{% url 'sls:logout' %}">Logout</a>
-          </li>
-        </ul>
-      </div>
-      <br>
-      <div class="collapsable-nav-burger">
-        <div id="burger-icon" onclick="handleBurgerNav()">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <ul id="nav-ui-burger" class="nav-ui" style="visibility: hidden;">
-          <li>
-            <a href="{% url 'sls:logout' %}">Logout</a>
-          </li>
         </ul>
       </div>
     </div>

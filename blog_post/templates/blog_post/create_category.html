@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}<div class="overlay">
+  <div class="overlay-content">
+    <form class="" method="post">
+      {% csrf_token %}
+      {{ category_form }}
+      <input type="submit" name="" value="Confirm">
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block java_insert %}
+  <link href="{% static 'admin\js\admin\RelatedObjectLookups.js' %}" rel="stylesheet">
+{% endblock %}

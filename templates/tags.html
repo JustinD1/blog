@@ -1,0 +1,21 @@
+<h3>Post Tags</h3>
+<p>Here is a quick filter you can use on topics you are interested in:</p>
+<ul>
+  {% for category in navigation %}
+    <a href="{% url 'blog_filter' slug=category.slug %}">
+      <li>{{category.category}}</li>
+    </a>
+    <ul>
+    {% for key,tag in tags.items %}
+      {% if key == category %}
+        {% for item in tag %}
+          <a href="{% url 'blog_filter' slug=item.slug %}">
+            <li> {{item.name}} </li>
+          </a>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+  {% endfor %}
+
+</ul>

@@ -1,0 +1,25 @@
+<h2>About me</h2>
+<ul>
+  <li> Location: {{about_me.profile.location}} </li>
+  <li> Social Links: </li>
+  <ul>
+    {% for social in about_me.socials %}
+      {% if show %} <a href="{{social.social_link}}"><li>
+        <img src="{{social.logo}}" alt="{{social.name}}" height="32px" width="32px">
+        <p>{{social.social_username}}</p>
+       </li></a> {% endif %}
+    {% endfor %}
+  </ul>
+  <li> Other Links: </li>
+  <ul>
+    {% for paper in about_me.papers %}
+      <li>  </li>
+    {% endfor %}
+  </ul>
+  <li> Bio: </li>
+  <ul>
+    <div id="bio-box">
+
+    </div>
+  </ul>
+</ul>

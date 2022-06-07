@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<form class=""  method="post">
+  {% csrf_token %}
+  {{ post_form }}
+  {{ tag_cate_form }}
+  <input type="submit" name="" value="Confirm">
+</form>
+
+{% endblock %}
+
+{% block java_insert %}
+  <link href="{% static 'admin\js\admin\RelatedObjectLookups.js' %}" rel="stylesheet">
+{% endblock %}

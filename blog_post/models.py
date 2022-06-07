@@ -1,24 +1,68 @@
-from django.db import models
-from django.utils.timezone import now
-from django.utils.text import slugify
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import models
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.utils.text import slugify
+from django.utils.timezone import now
 
 from blog.util import unique_slug_generator
 
 from taggit.managers import TaggableManager
+from taggit.models import TagBase, GenericTaggedItemBase
+
+class PublishedPapers(models.Model):
+    """docstring for ExternalLinks for none social media."""
+    """I want to distinguish between the socials and other work I have done"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(blank=True, max_length=100)
+    url = models.URLField(blank=False)
+    show = models.BooleanField(default=True)
+    position = models.IntegerField(blank=True, null=True)
+
+    def __init__(self, arg):
+        super(ExternalLinks, self).__init__()
+        self.arg = arg
+
+
+class SocialLinks(models.Model):
+    """docstring for Socials."""
+    """ This is mainly to link to linkedin profile. """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(blank=True, max_length=100)
+    social_username = models.CharField(blank=False, max_length=100)
+    social_link = models.URLField(blank=False)
+    show = models.BooleanField(default=True)
+    logo = models.ImageField(upload_to="social_logo/", null=True,blank=True)
+    position = models.IntegerField(blank=True, null=True)
+
+    def __init__(self, arg):
+        super(Socials, self).__init__()
+        self.arg = arg
+
+
+class Profile(models.Model):
+    """This extends the user model created by django. It is to render the about
+    me section on the blog, commeting out the external links for now as I want
+    think how to handle them"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    # socials = models.ForeignKey(SocialLinks, on_delete=models.CASCADE)
+    # papers = models.ForeignKey(PublishedPapers, on_delete=models.CASCADE)
 
 class Categories(models.Model):
     """(Categories description)"""
-    """ Model for listing all the categories that are created by the user. This is the same list that creates the site navigation """
+    """ Model for listing all the categories that are created by the user. This
+    is the same list that creates the site navigation """
     category = models.CharField(blank=True, max_length=100)
     slug = models.SlugField(unique=True,null=True,editable=False,blank=True)
 
     def __str__(self):
         return self.category
     def save(self, *args, **kwargs):
-        value = self.category
+        value = "-".join(("category", self.category))
         self.slug = slugify(value, allow_unicode=True)
         super().save(*args, **kwargs)
 
@@ -68,9 +112,20 @@ class PostAlbum(models.Model):
 
     def __unicode__(self):
         return u"PostAlbum"
-
-
+"""These are hooks for saving information to the database, via
+automatically taking information from other fields for the slug field which is
+compossited of titles/prefix/counter to keep the slug unique. and for the user
+to fill out the about me section when an account is created."""
 @receiver(pre_save, sender=BlogPosts)
 def pre_save_receiver(sender, instance, *args, **kwargs):
    if not instance.slug:
        instance.slug = unique_slug_generator(instance)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
