@@ -1,4 +1,130 @@
-.floatcontent {
+
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+head{
+  margin: 0;
+}
+body{
+  margin: 0;
+  background-color: #e7feff;
+}
+header{
+}
+#headerDiv{
+  text-align: center;
+}
+#headerText{
+  margin-top: -150px;
+  text-align: center;
+}
+#headerText > a{
+  padding-left: 30px;
+  text-decoration: none;
+  color: black;
+  font-family: 'Parisienne', cursive;
+  font-size: 4em;
+}
+#headerText > a > h1{
+  margin-bottom: 10px;
+}
+#all-content {
+  align-content: center;
+}
+.content {
   float: left;
-  
+}
+.clearfloat{
+  clear: both;
+}
+.divUnderscore{
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  border-bottom: 10px double #ff8c00;
+}
+
+
+div#ctrColumn{
+  width: 64%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* navigation css */
+.nav-ui{
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nav-ui > a > li{
+  margin-right: 5px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  border: 1px solid #ff8c00;
+  width: 100px;
+  text-align: center;
+  box-shadow: inset 1px -2px gray;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  flex: 0 0 auto;
+}
+.nav-ui > a:hover > li{
+  text-decoration: none;
+  margin-right: 5px;
+  background-color: #a6e7ff;
+  border: 1px solid #ffdab9;
+  flex: 0 0 auto;
+  color: white;
+  font-size: large;
+}
+.nav-ui > a{
+  text-decoration: none;
+  color: black;
+  font-size: large;
+  flex: 0 0 auto;
+}
+.nav-ui > a.active > li{
+  background-color: #008b8b;
+}
+.nav-ui > a.active > li{
+  color: white;
+}
+
+
+/* About me section */
+#lftColumn{
+  width: 18%;
+  min-height: 600px;
+  /* padding: 5px; */
+  padding: 10px 5px 5px 10px;
+  margin-top: 0;
+  border-right: 5px double #ff8c00;
+  box-shadow: 4px 5px 4px #008b8b;
+}
+#lftColumn > ul{
+  list-style: none;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+#lftColumn >ul > li > h4{
+  margin: 2px 0px;
+}
+#lftColumn >ul > ul{
+list-style-type: disc;
+}
+
+/* post filter section */
+#rgtColumn{
+  width: 13%;
+  min-height: 600px;
+  padding: 5px;
+  border-left: 5px double #ff8c00;
+  box-shadow: -4px 5px 4px #008b8b;
+}
+#rgtColumn > ul {
+  list-style: none;
+  padding-left: 10px;
+}
+#rgtColumn > ul > ul {
+  list-style-type: disc;
 }

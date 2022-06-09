@@ -53,7 +53,7 @@ def post_view(request,slug=None):
     # content['tags']
     content = load_sidebars_nav()
 
-    post = BlogPosts.objects.filter(author=content['aboutme'].pk,slug=slug)
+    post = BlogPosts.objects.filter(author=content['about_me'].pk,slug=slug)
 
     content["posts"] = post
     content['posts_exists'] = True

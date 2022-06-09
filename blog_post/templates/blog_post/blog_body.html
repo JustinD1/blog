@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 {% if posts_exists %}
@@ -26,4 +27,8 @@
 {% else %}
   <p>{{posts}}</p>
 {% endif %}
+{% endblock %}
+
+{% block css_content_insert %}
+<link rel="stylesheet" href="{% static 'css/css-posts.css' %}">
 {% endblock %}

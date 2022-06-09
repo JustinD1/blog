@@ -4,13 +4,16 @@
     <div class="navbar-content">
       <div class="non-collapsable-nav">
         <ul class="nav-ui">
-          {% for item in navitation %}
-          <li>
-            <a class="{% navactive request 'blog_filter' slug=item.slug %}" href="{% url 'blog_filter' slug=item.slug %}">{{ item.category }}</a>
-          </li>
+          {% for item in navigation %}
+          <a class="{% navactive request 'blog_filter' slug=item.slug %}" href="{% url 'blog_filter' slug=item.slug %}">
+            <li class="">
+              {{ item.category }}
+            </li>
+            </a>
           {% endfor %}
         </ul>
       </div>
     </div>
   </div>
 </div>
+<div class="clearfloat divUnderscore"></div>

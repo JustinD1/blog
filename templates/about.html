@@ -1,7 +1,8 @@
 <h2>About me</h2>
 <ul>
-  <li> Location: {{about_me.profile.location}} </li>
-  <li> Social Links: </li>
+  <li> <h4>Location:</h3></li>
+    <li style="padding-left:40px;">{{about_me.profile.location}}</li>
+  <li> <h4>Social Links:</h3> </li>
   <ul>
     {% for social in about_me.socials %}
       {% if show %} <a href="{{social.social_link}}"><li>
@@ -10,16 +11,14 @@
        </li></a> {% endif %}
     {% endfor %}
   </ul>
-  <li> Other Links: </li>
+  <li> <h4>Other Links:</h3> </li>
   <ul>
+    <li> test </li>
+    <li> test </li>
+    <li> test </li>
     {% for paper in about_me.papers %}
-      <li>  </li>
     {% endfor %}
   </ul>
-  <li> Bio: </li>
-  <ul>
-    <div id="bio-box">
-
-    </div>
-  </ul>
+  <li> <h4>Bio:</h3> </li>
+  <li style="padding-left:40px;">{{about_me.profile.bio}}</li>
 </ul>
