@@ -6,7 +6,7 @@
     <title>{% block title %}Justin's Blog{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'image/favicon/favicon.svg' %}">
 
-    {% block css_insert %}{% endblock %}
+    {% block css_content_insert %}{% endblock %}
     <link href="{% static 'css/css-blog.css' %}" rel="stylesheet">
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,13 +21,12 @@
       </div>
     </header>
 
-    <div id="all-content"class="">
+    <div id="allContent"class="">
       <div id="lftColumn" class="content">
         {% include "about.html" %}
       </div>
 
       <div id="ctrColumn" class="content">
-        {% block css_content_insert %}{% endblock %}
         {% block content %}{% endblock %}
       </div>
 
@@ -35,7 +34,7 @@
         {% include "tags.html" %}
       </div>
     </div>
-    <div class="clearfloat">
+    <div class="clearFloat">
 
     </div>
 

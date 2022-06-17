@@ -27,12 +27,15 @@ def create_category(request):
 
 def create_post(request):
     content = {}
+
     # Load the information for the navigation/about_me/category tags.
-    # content["navitation"]
+    # content["navigation"]
     # content['about_me']
     # content['tags']
     content = load_sidebars_nav()
 
+    # Create the form for the site and is a post form has been submitted via POST
+    #  request then validate the submission and save.
     if request.method == 'POST':
         post_form = PostForm(request.POST)
         if post_form.is_valid():
@@ -40,7 +43,7 @@ def create_post(request):
     else:
         post_form = PostForm()
 
-    #Make the dirctory of content to be used in the site:
+    #Make the directory of content to be used in the site:
     content['post_form'] = post_form
 
     return render(request, 'blog_post/create_post.html',content)
@@ -48,7 +51,7 @@ def create_post(request):
 def post_view(request,slug=None):
     content = {}
     # Load the information for the navigation/about_me/category tags.
-    # content["navitation"]
+    # content["navigation"]
     # content['about_me']
     # content['tags']
     content = load_sidebars_nav()
@@ -62,7 +65,7 @@ def post_view(request,slug=None):
 def home_view(request, slug=None):
     content = {}
     # Load the information for the navigation/about_me/category tags.
-    # content["navitation"]
+    # content["navigation"]
     # content['about_me']
     # content['tags']
     content = load_sidebars_nav()
@@ -74,8 +77,8 @@ def home_view(request, slug=None):
 
     # If the user wants to filter the blog this will handle any of the quick
     # taggit links and category navigation filters that are used on the site.
-    print(content)
-    print(content['about_me'])
+    # print(content)
+    # print(content['about_me'])
     if slug:
         if slug.startswith("category-"):
             category = Categories.objects.get(slug=slug)
@@ -86,13 +89,13 @@ def home_view(request, slug=None):
     else:
         posts = BlogPosts.objects.filter(author=content['about_me'].id,is_published=True).order_by('-post_published_on')
 
-    # Checks to see if there is any objests in posts, If there is none then it
+    # Checks to see if there is any objects in posts, If there is none then it
     # send the no_posts_comment to the user.
     if not posts.exists():
         posts = no_posts_comment
         posts_exists = False
 
-    # Set all needed data to the dictionary of contants used by the frount end.
+    # Set all needed data to the dictionary of contents used by the front end.
     content['posts'] = posts
     content['posts_exists'] = posts_exists
 

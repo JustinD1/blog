@@ -17,15 +17,15 @@ def build_tag_menu():
 
 def load_sidebars_nav():
     content={}
-    print('Load in about me section')
+    # print('Load in about me section')
     content['about_me'] = blog_owner()
 
     # Load in the category model for setting up the navigation for the site and
     # the tag's used in the categories
     if Categories.objects.all().exists():
-        print('Load in nav section')
+        # print('Load in nav section')
         content["navigation"] = Categories.objects.all()
-        print('Load in tag section')
+        # print('Load in tag section')
         content['tags'] = build_tag_menu()
 
     return content

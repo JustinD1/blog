@@ -1,34 +1,35 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block css_content_insert %}
+<link rel="stylesheet" href="{% static 'css/css-posts.css' %}">
+{% endblock %}
+
 {% block content %}
+<div id="mainContent" class="">
 {% if posts_exists %}
   {% for post in posts %}
-  <div class="">
+  <div class="post {% cycle 'postEven' 'postOdd' %}">
     <a href="{% url 'post_detail' slug=post.slug %}">
-      <div class="">
-        <div class="">
-          <h4>
-            {{ post.title }}
-          </h4>
-        </div>
-        <div class="">
-          <p>
-            {{ post.body }}
-          </p>
-        </div>
-        <div class="">
-          {{ post.post_published_on }}
-        </div>
+      <div class="postImgDiv">
+        <img class= "imgEven" src="#" alt="{{ post.title }}" width="200" height="200">
       </div>
+      <div class="postContentDiv">
+        <h2 class="postTitle">
+          {{ post.title }}
+        </h2>
+        <p class="postBody">
+          {{ post.body|truncatewords:25 }}
+        </p>
+        <br>
+      </div>
+      <p class="postTime clearFloat">{{ post.post_published_on }}</p>
     </a>
   </div>
   {% endfor %}
 {% else %}
-  <p>{{posts}}</p>
+  <p class="post postEven">{{posts}}</p>
 {% endif %}
+</div>
 {% endblock %}
 
-{% block css_content_insert %}
-<link rel="stylesheet" href="{% static 'css/css-posts.css' %}">
-{% endblock %}
