@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main(){
+func main() {
 	// Connect to database
 	db_mysql.ConnectDb ()
 

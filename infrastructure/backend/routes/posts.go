@@ -16,7 +16,7 @@ func GetPosts (c *gin.Context){
 	}
 	defer rows.Close ()
 
-	var posts []map[string]interface{}
+	var posts []map[string]any
 	for rows.Next () {
 		var id int
 		var title, content string
@@ -37,7 +37,7 @@ func GetPost (c *gin.Context) {
 		"SELECT id, title, content FROM posts WHERE id = ?",
 		id)
 
-	var post map[string]interface{}
+	var post map[string]any
 	var title, content string
 	var postId int
 	err := row.Scan (&postId, &title, &content)
