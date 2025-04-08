@@ -10,10 +10,8 @@ import (
 )
 
 func main() {
-	// Connect to database
 	db_mysql.ConnectDb ()
 
-	// Initialize router
 	r := gin.Default ()
 
 	trustedProxy := os.Getenv ("API_URL")
@@ -27,6 +25,10 @@ func main() {
 			c.JSON(200, gin.H{"message": "Backend is running..."})
 	})
 
+	// auth.go
+	r.POST("/login", routes.LoginUser)
+
+	// posts.go
 	r.GET ("/posts", routes.GetPosts)
 	r.GET ("/post/:id", routes.GetPost)
 	r.POST ("/create_post", routes.CreatePost)
