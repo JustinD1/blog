@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/middleware"
 	"backend/db_mysql"
 	"backend/routes"
 	"os"
@@ -20,18 +21,9 @@ func main() {
 	}
 	r.SetTrustedProxies ([]string{trustedProxy})
 
-	// Routes
-	r.GET ("/", func (c *gin.Context) {
-			c.JSON(200, gin.H{"message": "Backend is running..."})
-	})
-
-	// auth.go
-	r.POST("/login", routes.LoginUser)
-
-	// posts.go
-	r.GET ("/posts", routes.GetPosts)
-	r.GET ("/post/:id", routes.GetPost)
-	r.POST ("/create_post", routes.CreatePost)
+	setupPublicRoutes (r)
+	setupAuthRoutes (r)
+	setupPostRoutes (r)
 
 	// Start server
 	port := os.Getenv ("API_PORT")
@@ -43,4 +35,24 @@ func main() {
 	if err != nil {
 		log.Fatal ("Failed to start server. ", err)
 	}
+}
+
+
+func setupPublicRoutes(r *gin.Engine) {
+	r.GET ("/", func(c *gin.Context) {
+		c.JSON (200, gin.H{"message": "Backend is running..."})
+	})
+}
+
+func setupAuthRoutes(r *gin.Engine) {
+	r.POST ("/login", routes.LoginUser)
+}
+
+func setupPostRoutes(r *gin.Engine) {
+	r.GET ("/posts", routes.GetPosts)
+	r.GET ("/post/:id", routes.GetPost)
+
+	protected := r.Group ("/")
+	protected.Use (middleware.AuthRequired ())
+	protected.POST ("/create_post", routes.CreatePost)
 }
