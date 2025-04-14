@@ -1,12 +1,15 @@
-import { createRoot } from 'react-dom/client'
+import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import {QueryClient, QueryClientContext} from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {AuthProvider} from "./context/AuthContext.jsx";
 
 const queryClient = new QueryClient ();
 
 createRoot(document.getElementById('root')).render(
-  <QueryClientContext client={queryClient}>
-    <App />
-  </QueryClientContext>,
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </QueryClientProvider>,
 )

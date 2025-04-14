@@ -1,39 +1,52 @@
 import {Fragment, useEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
+import {ButtonLoginLogout} from "./ButtonLoginLogout.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
 
-export const Sidebar = ({asideClassName}) => {
+export const Sidebar = ({asideClassName, onLoginClick, onLogout}) => {
   const location = useLocation();
   const [active, setActive] = useState(window.location.pathname)
+  const {user} = useAuth()
 
   useEffect(() => {
     setActive(location.pathname)
   }, [location.pathname]);
 
   const sideBarItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { access: "public", name: "Home", path: "/" },
+    { access: "public", name: "About", path: "/about" },
+    { access: "public", name: "Contact", path: "/contact" },
+    { access: "admin", name: "Create Post", path: "/create_post" },
   ]
+
+  const add_sidebar_item = (item) => {
+    const isAdminAccess = item.access === "admin";
+    const hasUser = user !== undefined && user !== null;
+    const hideItem = isAdminAccess && !hasUser;
+
+    return (
+      <li key={item.path} className={`sidebarItem ml-1 mb-2 hover:bg-gray-700 rounded ${hideItem ? "hidden" : ""}`}>
+        <Link to={item.path}
+              className={`block p-2 rounded transition ${
+                active === item.path ? "bg-gray-700 text-white" : "hover:bg-gray-700"
+              }`}>
+          {item.name}
+        </Link>
+      </li>
+    );
+  }
 
   return (
     <Fragment>
-      <aside className={asideClassName}>
-        <h2 className="text-lg font-bold">Justin Donohoe</h2>
-        <ul>
+      <aside className={`mt-0 pr-4 ${asideClassName}`}>
+        <ul className={"w-full"}>
           {
-            sideBarItems.map((item) => (
-              <li key={item.path} className='mt-2 hover:bg-gray-700 p-2 rounded '>
-                <Link to={item.path}
-                className={`block mt-2 p-2 rounded transition ${
-                  active === item.path ? "bg-gray-700 text-white" : "hover:bg-gray-700"
-                }`}>
-                  {item.name}
-                </Link>
-              </li>
-            ))
-
+            sideBarItems.map((item) => (add_sidebar_item(item)))
           }
         </ul>
+
+        <ButtonLoginLogout user={user} onLogout={onLogout} onLoginClick={onLoginClick} />
+
       </aside>
     </Fragment>
   )

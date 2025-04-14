@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { SinglePageTemplate } from "../SinglePageTemplate.jsx";
+import {Fragment} from "react";
+import {SinglePageTemplate} from "../template/SinglePageTemplate.jsx";
 import {TruncatedBlogCard} from "../components/TruncatedBlogCard.jsx";
 
 export const Home = () => {
@@ -14,7 +14,7 @@ export const Home = () => {
     return (
       <Fragment>
         {cards.map(item => (
-          <TruncatedBlogCard id={item.id} title={item.title} content={item.content} />
+          <TruncatedBlogCard key={item.id} title={item.title} content={item.content} />
         ))}
       </Fragment>
     )
@@ -22,7 +22,7 @@ export const Home = () => {
   const content = () => {
     return (
       <Fragment>
-        <main className="flex-1 p-6 bg-gray-100">
+        <main className="flex-1 p-6 rounded-tl-3xl contentContainer">
           <h1 className="text-2xl font-bold">Welcome to my blog</h1>
           <p>This blog is cataloging my work and hobbies</p>
 
@@ -31,5 +31,5 @@ export const Home = () => {
       </Fragment>
     );
   };
-  return <SinglePageTemplate content={content()} />;
+  return <SinglePageTemplate content={content ()} />;
 };
