@@ -9,7 +9,6 @@ export const SinglePageTemplate = ({ content }) => {
   const [user, setUser] = useState(null);
 
   const handleLoginSuccess = (userData) => {
-    console.log("Login success:", userData);
     if (userData)
     {
       setUser(userData?.forename);
