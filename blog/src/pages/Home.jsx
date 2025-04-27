@@ -1,10 +1,12 @@
-import {Fragment, useEffect} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {SinglePageTemplate} from "../template/SinglePageTemplate.jsx";
 import {TruncatedBlogCard} from "../components/TruncatedBlogCard.jsx";
 import {usePosts} from "../hooks/posts.js";
+import {PostDisplayModal} from "../modals/PostDisplayModal.jsx";
 
 export const Home = () => {
-    const {
+  const [selectedPost, setSelectedPost] = useState(null)
+  const {
     data,
     fetchNextPage,
     hasNextPage,
@@ -15,9 +17,9 @@ export const Home = () => {
 
   const posts = data?.pages?.flatMap(page => page.posts);
 
-    useEffect(() => {
-      console.log(data)
-    }, [data])
+  useEffect(() => {
+    console.log(selectedPost);
+  }, [selectedPost])
 
   const content = () => {
     return (
@@ -32,25 +34,38 @@ export const Home = () => {
           {posts?.length > 0 && (
             <div className={"w-full"}>
               {posts?.map(post => (
-                <TruncatedBlogCard
-                  key={post.id}
-                  title={post.title}
-                  content={post.content}
-                />
+                <button key={post.id}
+                        onClick={() => setSelectedPost(post)}
+                        className={"w-full text-left"}>
+                  <TruncatedBlogCard
+                    key={post.id}
+                    title={post.title}
+                    content={post.content}
+                  />
+                </button>
               ))}
             </div>)}
 
           {hasNextPage && (
             <button
-              onClick={() => fetchNextPage ()}
+              onClick={() => fetchNextPage()}
               disabled={isFetchingNextPage}
               className={"load-more-button"}>
               {isFetchingNextPage ? "Loading..." : "Next"}
             </button>
           )}
         </main>
+
+        {selectedPost !== null && (
+          <PostDisplayModal
+            post={selectedPost}
+            onClose={() => {
+              setSelectedPost(null)
+            }}
+          />
+        )}
       </Fragment>
     );
   };
-  return <SinglePageTemplate content={content ()} />;
+  return <SinglePageTemplate content={content()}/>;
 };
