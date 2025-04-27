@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useLogin} from "../hooks/useAuth.js";
 
-export const ModelLogin = ({onClose}) => {
+export const LoginModal = ({onClose}) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 

@@ -1,7 +1,7 @@
 import {Sidebar} from "../components/Sidebar.jsx";
 import {Fragment, useState} from "react";
 import {useAuth} from "../context/AuthContext.jsx";
-import {ModelLogin} from "../components/ModelLogin.jsx";
+import {LoginModal} from "../modals/LoginModal.jsx";
 
 export const SinglePageTemplate = ({ content }) => {
   const {login, logout} = useAuth()
@@ -34,7 +34,7 @@ export const SinglePageTemplate = ({ content }) => {
       </div>
 
     {showLogin && (
-       <ModelLogin onClose={handleLoginSuccess}/>
+       <LoginModal onClose={handleLoginSuccess}/>
     )}
     </Fragment>
   );
