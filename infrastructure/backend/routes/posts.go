@@ -1,33 +1,45 @@
 package routes
 
 import (
-	"backend/db_mysql"
 	"net/http"
+	"strconv"
+
+	"backend/db_mysql"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Get all posts
 func GetPosts (c *gin.Context){
-	rows, err := db_mysql.DB.Query ("SELECT id, title, content FROM posts")
-	if err != nil {
-		c.JSON (http.StatusInternalServerError, gin.H{"error": err.Error ()})
+	pageStr := c.DefaultQuery ("page", "1")
+	page, err := strconv.Atoi (pageStr)
+
+	if err != nil || page < 1 {
+		c.JSON (http.StatusBadRequest,
+			gin.H{"error": "Invalid page number"})
 		return
 	}
-	defer rows.Close ()
 
-	var posts []map[string]any
-	for rows.Next () {
-		var id int
-		var title, content string
-		rows.Scan (&id, &title, &content)
+	limitStr := c.DefaultQuery ("limit", "10")
+	limit, err := strconv.Atoi (limitStr)
 
-		posts = append (posts, gin.H{"id": id,
-			"title": title,
-			"content": content})
+	if err != nil || limit < 1 {
+		c.JSON (http.StatusBadRequest,
+			gin.H{"error": "Invalid page limit"})
+		return
 	}
 
-	c.JSON (http.StatusOK, posts)
+	offset := (page - 1) * limit
+
+	posts, err := db_mysql.GetPost (limit, offset)
+	if err != nil {
+		c.JSON (http.StatusInternalServerError,
+			gin.H{"error": "Error fetching posts"})
+		return
+	}
+
+	c.JSON (http.StatusOK, gin.H{"posts": posts})
+	
 }
 
 // Get a single post

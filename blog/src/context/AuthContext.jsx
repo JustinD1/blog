@@ -5,6 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, apiUrl, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

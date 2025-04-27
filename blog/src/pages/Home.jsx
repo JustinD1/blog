@@ -1,24 +1,24 @@
-import {Fragment} from "react";
+import {Fragment, useEffect} from "react";
 import {SinglePageTemplate} from "../template/SinglePageTemplate.jsx";
 import {TruncatedBlogCard} from "../components/TruncatedBlogCard.jsx";
+import {usePosts} from "../hooks/posts.js";
 
 export const Home = () => {
-  const elementBlogItems = () => {
-    const cards = [
-      { id: 0, title: "Post 1", content: "This is a test post" },
-      { id: 1, title: "Post 2", content: "This is a test post" },
-      { id: 2, title: "Post 3", content: "This is a test post" },
-      { id: 3, title: "Post 4", content: "This is a test post" },
-      { id: 4, title: "Post 5", content: "This is a test post" },
-    ];
-    return (
-      <Fragment>
-        {cards.map(item => (
-          <TruncatedBlogCard key={item.id} title={item.title} content={item.content} />
-        ))}
-      </Fragment>
-    )
-  }
+    const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error
+  } = usePosts({limit: 10});
+
+  const posts = data?.pages?.flatMap(page => page.posts);
+
+    useEffect(() => {
+      console.log(data)
+    }, [data])
+
   const content = () => {
     return (
       <Fragment>
@@ -26,7 +26,28 @@ export const Home = () => {
           <h1 className="text-2xl font-bold">Welcome to my blog</h1>
           <p>This blog is cataloging my work and hobbies</p>
 
-          {elementBlogItems()}
+          {isLoading && (<p>Loading...</p>)}
+          {error && (<p>Error loading posts!</p>)}
+
+          {posts?.length > 0 && (
+            <div className={"w-full"}>
+              {posts?.map(post => (
+                <TruncatedBlogCard
+                  key={post.id}
+                  title={post.title}
+                  content={post.content}
+                />
+              ))}
+            </div>)}
+
+          {hasNextPage && (
+            <button
+              onClick={() => fetchNextPage ()}
+              disabled={isFetchingNextPage}
+              className={"load-more-button"}>
+              {isFetchingNextPage ? "Loading..." : "Next"}
+            </button>
+          )}
         </main>
       </Fragment>
     );
