@@ -61,7 +61,7 @@ func setupAuthRoutes(r *gin.Engine) {
 
 func setupPostRoutes(r *gin.Engine) {
 	r.GET ("/posts", routes.GetPosts)
-	r.GET ("/post/:id", routes.GetPost)
+	r.GET ("/post/:uuid", routes.GetPost)
 
 	protected := r.Group ("/")
 	protected.Use (middleware.AuthRequired ())

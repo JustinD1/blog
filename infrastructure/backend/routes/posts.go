@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -31,7 +32,7 @@ func GetPosts (c *gin.Context){
 
 	offset := (page - 1) * limit
 
-	posts, err := db_mysql.GetPost (limit, offset)
+	posts, err := db_mysql.GetPosts (limit, offset)
 	if err != nil {
 		c.JSON (http.StatusInternalServerError,
 			gin.H{"error": "Error fetching posts"})
@@ -44,21 +45,20 @@ func GetPosts (c *gin.Context){
 
 // Get a single post
 func GetPost (c *gin.Context) {
-	id := c.Param ("id")
-	row := db_mysql.DB.QueryRow (
-		"SELECT id, title, content FROM posts WHERE id = ?",
-		id)
+	uuid := c.Param ("uuid")
 
-	var post map[string]any
-	var title, content string
-	var postId int
-	err := row.Scan (&postId, &title, &content)
+	post, err := db_mysql.GetPost (uuid)
+
 	if err != nil {
-		c.JSON (http.StatusNotFound, gin.H{"error": "Post not found"})
+		if errors.Is (err, db_mysql.ErrPostNotPublished) {
+			c.JSON (http.StatusNotFound, gin.H {"error":"Post not found"})
+		} else {
+			c.JSON (http.StatusInternalServerError,
+				gin.H {"error": err.Error ()})
+		}
 		return
 	}
 
-	post = gin.H{"id": postId, "title": title, "content": content}
 	c.JSON (http.StatusOK, post)
 }
 

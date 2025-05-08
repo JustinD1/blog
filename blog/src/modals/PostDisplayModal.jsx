@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
 export const PostDisplayModal = ({post, onClose}) => {
   const [isVisible, setIsVisible] = useState(true)
@@ -44,11 +45,19 @@ export const PostDisplayModal = ({post, onClose}) => {
         <div className={"overflow-y-auto h-4/5"}>
           <p className="text-sm text-gray-600">{post?.content}</p>
         </div>
-        <button className={"bg-gray-400 rounded-md w-1/2"}
+        <div className={"w-full inline-flex items-center justify-center"}>
+          <button className={"bg-gray-400 rounded-md w-1/2 m-2 h-10"}
+                  type={"button"}
+                  onClick={handleClose}>
+            Close
+          </button>
+          <Link as={"button"} to={`post/${post?.uuid}`}
+                className={"bg-gray-400 rounded-md w-1/2 m-2 text-center content-center h-10"}
                 type={"button"}
-                onClick={handleClose}>
-          Close
-        </button>
+          >
+            Open
+          </Link>
+        </div>
       </div>
     </div>
   )
