@@ -1,16 +1,37 @@
-import {useInfiniteQuery} from "@tanstack/react-query";
-import {fetchPosts} from "../api/posts.js";
+import {fetchPosts, fetchPostsAdmin} from "../api/posts.js";
+import {UserViewType} from "../enums/UserViewTypes.js";
+import {useQuery} from "@tanstack/react-query";
 
-export const usePosts = ({limit = 10}) => {
-  return useInfiniteQuery({
-    queryKey: ["posts", limit],
-    queryFn: async  ({pageParam=0}) => {
-      return await fetchPosts({limit, offset: pageParam})
-    },
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.posts.length < limit ) return undefined;
+export const usePosts = ({limit = 10, offset = 0, view = UserViewType.PublicView}) => {
+  return useQuery({
+      queryKey: ["posts", limit, offset],
+      queryFn: async () => {
+        const pagination = {limit: limit, offset: offset};
+        switch (view) {
+          case UserViewType.AdminView:
+            return await fetchPostsAdmin(pagination);
 
-      return allPages.length * limit;
+          case UserViewType.PublicView:
+            return await fetchPosts(pagination);
+
+          default: {
+            console.error("Unknown view", view);
+            return null;
+          }
+        }
+      },
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage || !Array.isArray(lastPage.posts)) {
+          console.warn("Unexpected response shape:", lastPage);
+          return undefined;
+        }
+
+        if (lastPage.posts.length < limit) {
+          return undefined;
+        }
+
+        return allPages.reduce((acc, page) => acc + page.posts.length, 0);
+      }
     }
-  });
+  );
 };

@@ -2,6 +2,7 @@ import {Fragment, useEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 import {ButtonLoginLogout} from "./ButtonLoginLogout.jsx";
 import {useAuth} from "../context/AuthContext.jsx";
+import {UserViewType} from "../enums/UserViewTypes.js";
 
 export const Sidebar = ({asideClassName, onLoginClick, onLogout}) => {
   const location = useLocation();
@@ -13,14 +14,14 @@ export const Sidebar = ({asideClassName, onLoginClick, onLogout}) => {
   }, [location.pathname]);
 
   const sideBarItems = [
-    { access: "public", name: "Home", path: "/" },
-    { access: "public", name: "About", path: "/about" },
-    { access: "public", name: "Contact", path: "/contact" },
-    { access: "admin", name: "Create Post", path: "/create_post" },
+    {access: UserViewType.PublicView, name: "Home", path: "/"},
+    {access: UserViewType.PublicView, name: "About", path: "/about"},
+    {access: UserViewType.PublicView, name: "Contact", path: "/contact"},
+    {access: UserViewType.AdminView, name: "Admin View", path: "/admin_view"},
   ]
 
   const add_sidebar_item = (item) => {
-    const isAdminAccess = item.access === "admin";
+    const isAdminAccess = item.access === UserViewType.AdminView;
     const hasUser = user !== undefined && user !== null;
     const hideItem = isAdminAccess && !hasUser;
 
@@ -45,7 +46,7 @@ export const Sidebar = ({asideClassName, onLoginClick, onLogout}) => {
           }
         </ul>
 
-        <ButtonLoginLogout user={user} onLogout={onLogout} onLoginClick={onLoginClick} />
+        <ButtonLoginLogout user={user} onLogout={onLogout} onLoginClick={onLoginClick}/>
 
       </aside>
     </Fragment>

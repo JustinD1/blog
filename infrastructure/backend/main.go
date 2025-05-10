@@ -4,6 +4,8 @@ import (
 	"backend/middleware"
 	"backend/db_mysql"
 	"backend/routes"
+	"backend/enums"
+
 	"os"
 	"log"
 	"time"
@@ -49,6 +51,12 @@ func main() {
 }
 
 
+func getPostHandler (ViewType enums.ApiViewUserType) gin.HandlerFunc {
+	return func (c *gin.Context) {
+		routes.GetPosts (c, ViewType)
+	}
+}
+
 func setupPublicRoutes(r *gin.Engine) {
 	r.GET ("/", func(c *gin.Context) {
 		c.JSON (200, gin.H{"message": "Backend is running..."})
@@ -60,10 +68,11 @@ func setupAuthRoutes(r *gin.Engine) {
 }
 
 func setupPostRoutes(r *gin.Engine) {
-	r.GET ("/posts", routes.GetPosts)
+	r.GET ("/posts", getPostHandler (enums.PublicView))
 	r.GET ("/post/:uuid", routes.GetPost)
 
 	protected := r.Group ("/")
 	protected.Use (middleware.AuthRequired ())
 	protected.POST ("/create_post", routes.CreatePost)
+	protected.GET ("/admin_view", getPostHandler (enums.AdminView))
 }

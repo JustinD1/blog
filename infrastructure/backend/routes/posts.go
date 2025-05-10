@@ -6,16 +6,17 @@ import (
 	"strconv"
 
 	"backend/db_mysql"
+	"backend/enums"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Get all posts
-func GetPosts (c *gin.Context){
-	pageStr := c.DefaultQuery ("page", "1")
-	page, err := strconv.Atoi (pageStr)
+func GetPosts (c *gin.Context, ViewType enums.ApiViewUserType){
+	offestStr := c.DefaultQuery ("offset", "1")
+	offset, err := strconv.Atoi (offestStr)
 
-	if err != nil || page < 1 {
+	if err != nil || offset < 0 {
 		c.JSON (http.StatusBadRequest,
 			gin.H{"error": "Invalid page number"})
 		return
@@ -30,9 +31,7 @@ func GetPosts (c *gin.Context){
 		return
 	}
 
-	offset := (page - 1) * limit
-
-	posts, err := db_mysql.GetPosts (limit, offset)
+	posts, err := db_mysql.GetPosts (limit, offset, ViewType)
 	if err != nil {
 		c.JSON (http.StatusInternalServerError,
 			gin.H{"error": "Error fetching posts"})
