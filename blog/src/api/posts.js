@@ -6,8 +6,6 @@ const getAuthToken = () => {
   return localStorage.getItem("token");
 }
 export const fetchPosts = async ({limit, offset}) => {
-  console.log("limit", limit);
-  console.log("offset", offset);
   const res = await axios.get(`${API_URL}/posts`,
     {params: {limit, offset}})
   return res.data;

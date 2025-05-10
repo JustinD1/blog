@@ -5,18 +5,17 @@ export const LoginModal = ({onClose}) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const { mutate: login, isLoading, error } = useLogin();
+  const {mutate: login, isLoading, error} = useLogin();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    login( {email, password },
+    login({email, password},
       {
-        onSuccess: (data)=> {
-          console.log("Login Success:", data);
-          onClose (data)
+        onSuccess: (data) => {
+          onClose(data)
         },
-          onError: (error)=> {
-          console.log (error)
+        onError: (error) => {
+          console.log(error)
         },
       })
   }
