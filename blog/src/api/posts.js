@@ -27,3 +27,13 @@ export const fetchPostByUuid = async ({uuid}) => {
     {params: {uuid}});
   return res.data;
 }
+
+export const createPost = async (post) => {
+  const token = getAuthToken();
+
+  const config = {
+    headers: {Authorization: `Bearer ${token}`}
+  }
+  const res = await axios.post(`${API_URL}/create_post`, post, config);
+  return res.data;
+}

@@ -26,3 +26,11 @@ type PublicPost struct {
 	Author    string       `json:"author"`
 	PublishAt sql.NullTime `json:"publish_at"`
 }
+
+type CreatePost struct {
+	Title     string       `json:"title"`
+	Content   string       `json:"content"`
+	Author    string       `json:"author"`
+	PublishAt sql.NullTime `json:"publish_at"`
+	IsDraft   bool         `json:"is_draft"`
+}

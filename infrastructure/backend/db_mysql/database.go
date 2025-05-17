@@ -1,15 +1,18 @@
 package db_mysql
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"time"
-	"errors"
 
+	"backend/enums"
 	"backend/models"
 	"database/sql"
-	"backend/enums"
+
+	"crypto/rand"
+	"encoding/hex"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -150,4 +153,60 @@ func GetPost (uuid string) (*models.PublicPost, error) {
 	}
 
 	return &post, nil
+}
+
+func checkUUIDCollision (uuid string) (bool, error) {
+	var count int
+	query := `SELECT COUNT(*) FROM posts WHERE uuid=?`
+	err := DB.QueryRow (query, uuid).Scan (&count)
+	if err != nil {
+		return false, fmt.Errorf ("error generating post UUID")
+	}
+	return count > 0, nil
+}
+
+func generateShortUUID (n, maxAttempts int) (string, error) {
+	var uuid string
+
+	for attempt := 0; attempt < maxAttempts; attempt++ {
+		bytes := make ([]byte, n)
+		_, err := rand.Read (bytes)
+		if err != nil {
+			return "", err
+		}
+		uuid = hex.EncodeToString (bytes)
+		exists, err := checkUUIDCollision (uuid)
+		if err != nil {
+			return "", err
+		}
+		if !exists {
+			return uuid, nil
+		}
+	}
+	return "", fmt.Errorf ("failed to generate unique UUID after %d attempts", maxAttempts)
+}
+
+func CreatePost (post models.Post) (error) {
+	uuid, err := generateShortUUID (4, 1000)
+	if err != nil {
+		return err
+	}
+	post.Uuid = uuid
+	
+	query := `INSERT INTO posts (
+uuid, title, content, author, count, created, publish_at, is_draft
+) VALUES (?, ?, ?, ?, 0, NOW(), ?, ?)`
+	_, err = DB.Exec (
+		query,
+		post.Uuid,
+		post.Title,
+		post.Content,
+		post.Author,
+		post.PublishAt,
+		post.IsDraft,
+	)
+	if err != nil {
+		return fmt.Errorf ("error creating post: %v", err)
+	}
+	return nil
 }

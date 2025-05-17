@@ -4,6 +4,7 @@ import {Home} from "./pages/Home.jsx";
 import {Post} from "./pages/Post.jsx";
 import {ProtectedRoute} from "./components/ProtectedRoute.jsx";
 import {AdminView} from "./pages/AdminView.jsx";
+import {CreatePost} from "./pages/CreatePost.jsx";
 
 function App() {
   return (
@@ -14,6 +15,11 @@ function App() {
         <Route path={"admin_view"} element={
           <ProtectedRoute>
             <AdminView/>
+          </ProtectedRoute>
+        }/>
+        <Route path="create_post" element={
+          <ProtectedRoute>
+            <CreatePost/>
           </ProtectedRoute>
         }/>
       </Routes>

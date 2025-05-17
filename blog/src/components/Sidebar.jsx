@@ -18,6 +18,7 @@ export const Sidebar = ({asideClassName, onLoginClick, onLogout}) => {
     {access: UserViewType.PublicView, name: "About", path: "/about"},
     {access: UserViewType.PublicView, name: "Contact", path: "/contact"},
     {access: UserViewType.AdminView, name: "Admin View", path: "/admin_view"},
+    {access: UserViewType.AdminView, name: "Create Post", path: "/create_post"},
   ]
 
   const add_sidebar_item = (item) => {

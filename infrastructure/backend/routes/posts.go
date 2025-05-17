@@ -7,6 +7,7 @@ import (
 
 	"backend/db_mysql"
 	"backend/enums"
+	"backend/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -63,22 +64,22 @@ func GetPost (c *gin.Context) {
 
 // Create a new post
 func CreatePost (c *gin.Context) {
-	var body struct {
-		Title   string `json:"title"`
-		Content string `json:"content"`
-		Author  string `json:"author"`
-	}
+	var request models.CreatePost;
 
-	if err := c.BindJSON (&body); err != nil {
+	if err := c.BindJSON (&request); err != nil {
 		c.JSON (http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
-	_, err := db_mysql.DB.Exec (
-		"INSERT INTO posts (title, content, author) VALUES (?, ?, ?)",
-		body.Title,
-		body.Content,
-		body.Author)
+	post := models.Post {
+		Title: request.Title,
+		Content:request.Content,
+		Author:request.Author,
+		PublishAt:request.PublishAt,
+		IsDraft: request.IsDraft,
+	}
+
+	err := db_mysql.CreatePost (post)
 	if err != nil {
 		c.JSON (http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
