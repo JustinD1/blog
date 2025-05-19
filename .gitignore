@@ -1,1 +1,9 @@
+# token / secrets files
 deploy_digital_ocean.tokens
+
+# python virtual environments
+.venv/
+
+# Byte-compiled / cache files
+__pycache__/
+scripts/__pycache__/
