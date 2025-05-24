@@ -1,5 +1,6 @@
 # token / secrets files
 deploy_digital_ocean.tokens
+.env
 
 # python virtual environments
 .venv/
