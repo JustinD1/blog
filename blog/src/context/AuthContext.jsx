@@ -2,10 +2,12 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
+  const apiUrl = "http://localhost:8080";
+
+  console.log(apiUrl);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -29,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, apiUrl, login, logout }}>
+    <AuthContext.Provider value={{user, token, apiUrl, login, logout}}>
       {children}
     </AuthContext.Provider>
   );
