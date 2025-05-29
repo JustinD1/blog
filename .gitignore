@@ -1,6 +1,8 @@
 # token / secrets files
 deploy_digital_ocean.tokens
 .env
+blog/.env.prod
+infrastructure/backend/.env.prod
 
 # python virtual environments
 .venv/
